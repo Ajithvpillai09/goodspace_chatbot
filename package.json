@@ -1,0 +1,19 @@
+{
+  "name": "goodspace_chatbot",
+  "version": "1.0.0",
+  "description": "Chatbot with OpenAI, Socket.io, and MongoDB",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ajithvpillai09/goodspace_chatbot.git"
+  },
+  "author": "Ajith v",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ajithvpillai09/goodspace_chatbot/issues"
+  },
+  "homepage": "https://github.com/Ajithvpillai09/goodspace_chatbot#readme"
+}
