@@ -1,5 +1,5 @@
 import { Server, Socket } from 'socket.io';
-import { createSession } from '../controllers/dBController.js';
+import { createSession, updateSession } from '../controllers/dBController.js';
 import { getMessages } from '../controllers/openAIController.js';
 
 
@@ -13,9 +13,10 @@ const socketConfig = (io)=>{
     })
   
      
-      socket.on('sendMessage',(message)=>{
-        console.log(message)
-        getMessages(message).then(()=> io.emit('message',{hai:"recieved message"}))
+      socket.on('sendMessage',async (message)=>{
+        const answer =  await getMessages(message.message)
+        await updateSession({id:message.sessionId,req:message.message,res:answer})
+        io.emit('message',answer)
       })
 
     //   socket.on('disconnect',()=>{

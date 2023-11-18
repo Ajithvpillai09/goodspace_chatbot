@@ -10,15 +10,21 @@ export async function createSession(){
      }
 }
 
-export async function updateSession(id,data){
+export async function updateSession(data){
    try {  
-     id = new mongoose.Types.ObjectId(id)
-    const session = Session.updateOne(
-        {_id:id},
+    let {id,req,res} = data
+    id = new mongoose.Types.ObjectId(id)
+    await Session.updateOne(
+        { _id: id },
         {
-            $push:{session:data}
+            $push: {
+                session: {
+                    req: req,
+                    res: res
+                }
+            }
         }
-        )
+      )
    } catch (error) {
     console.log(error);
    }
