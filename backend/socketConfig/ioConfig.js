@@ -8,7 +8,7 @@ const socketConfig = (io)=>{
         console.log("socket connection created")
     
     
-    socket.on('welcome',(message)=>{
+    socket.on('welcome',()=>{
        createSession().then((id)=>io.emit('message',{status:"session created",sessionId:id}))
     })
   
@@ -16,7 +16,7 @@ const socketConfig = (io)=>{
       socket.on('sendMessage',async (message)=>{
         const answer =  await getMessages(message.message)
         await updateSession({id:message.sessionId,req:message.message,res:answer})
-        io.emit('message',answer)
+        io.emit('message',{status:"response",message:answer})
       })
 
     //   socket.on('disconnect',()=>{
