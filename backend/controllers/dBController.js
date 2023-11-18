@@ -32,7 +32,18 @@ export async function updateSession(data){
 
 export async function getAllSessions(){
     try {
-        const sessions = await Session.find()
+        const sessions = await Session.aggregate([
+            {
+              $project: {
+                _id: 1,
+                createdAt: {
+                    $dateToString: { format: "%d-%m %H:%M", date: "$createdAt", timezone: "+05:30" }
+                },
+                sessionReq: { $arrayElemAt: ['$session.req', 0] }
+              },
+            },
+           
+        ])
         return sessions
     } catch (error) {
         console.log(error);
