@@ -1,12 +1,14 @@
 import Session from "../models/session.js";
+import asyncHandler from "express-async-handler";
 import mongoose from "mongoose";
+
 
 export async function createSession(){
      try {
       const session =  await Session.create({})
       return session._id.toString();
      } catch (error) {
-        console.log(error);
+        throw new Error(error)
      }
 }
 
@@ -26,9 +28,11 @@ export async function updateSession(data){
         }
       )
    } catch (error) {
-    console.log(error);
+    throw new Error(error)
    }
 }
+
+
 
 export async function getAllSessions(){
     try {
@@ -46,7 +50,7 @@ export async function getAllSessions(){
         ])
         return sessions
     } catch (error) {
-        console.log(error);
+        throw new Error(error)
     }
 }
 
@@ -56,6 +60,6 @@ export async function getSessionById(id){
         const session = await Session.findOne({_id:id})
         return session
     } catch (error) {
-        console.log(error);
+        throw new Error(error)
     }
-}
+} 

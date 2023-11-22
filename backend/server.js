@@ -6,6 +6,7 @@ import { Server } from "socket.io";
 import socketConfig from "./socketConfig/ioConfig.js";
 import connectDB from "./config/db.js";
 import router from "./routes/route.js";
+import { notFound,errorHandler } from "./middleware/middlewares.js";
 
 dotenv.config()
 
@@ -34,11 +35,16 @@ const io = new Server(server,{
   });
 
 
-app.get('*', (req, res) =>
+app.get('/', (req, res) =>
     res.sendFile(path.resolve(__dirname, './frontend', 'index.html'))
 );
 
+app.use(notFound);
+app.use(errorHandler);
+
+
 socketConfig(io)
+
 
 const PORT = process.env.PORT
 

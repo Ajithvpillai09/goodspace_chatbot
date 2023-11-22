@@ -1,6 +1,18 @@
+const chatWindow = document.querySelector(".ChatWindow");
+
 window.onload = function() {
     const list = document.querySelector(".list");
 
+    list.addEventListener('click', function(event) {
+      const contentDiv = event.target.closest('.content');
+      
+      if (contentDiv) {
+          const id = contentDiv.getAttribute('data-id');
+          if (id) {
+              singleSesssion(id);
+          }
+      }
+  });
     const historyEndpoint = '/api/history';
     fetch(historyEndpoint)
       .then((response) => {
@@ -10,29 +22,61 @@ window.onload = function() {
         return response.json();
       })
       .then((data) => {
-        
-        console.log('All sessions:', data.data);
-       const history = data.data.map((el) => {
+       data.data.map((el) => {
         const box = document.createElement("div");
         box.classList.add("container");
         box.innerHTML = `
-          <div class="content">
+          <div class="content" data-id="${el._id}"">
             <div class="messageValue">
               ${el.sessionReq}
             </div>
-            <div>
-              ${el.createdAt}
-            </div>
           </div>
         `;
-        list.appendChild(box); // Append each box to the list
+        list.appendChild(box); 
       });
-        console.log(history);
-       
-    // list.appendChild(history);
+        
       })
       .catch((error) => {
         console.error('Error fetching all sessions:', error.message);
       });
   };
 
+
+  async function singleSesssion(id){
+    try {
+      const singleEndPoint = `/api/session/${id}`;
+  
+      const res = await fetch(singleEndPoint)
+      const data = await res.json()
+      chatWindow.innerHTML = ""
+      data.session.map((el)=>{
+        const req = document.createElement("div");
+        const res = document.createElement("div");
+        req.classList.add("ChatItem", "ChatItem--req")
+        res.classList.add("ChatItem", "ChatItem--res")
+        req.innerHTML = `
+          <div class="ChatItem-chatContent">
+            <div class="ChatItem-chatText">${el.req}</div>
+          </div>
+        `;
+        res.innerHTML = `
+          <div class="ChatItem-chatContent">
+            <div class="ChatItem-chatText">${el.res}</div>
+          </div>
+        `;
+        chatWindow.appendChild(req)
+        chatWindow.appendChild(res)
+      })
+
+      chatWindow.scrollTo({
+        top: chatWindow.scrollHeight,
+        behavior: 'smooth'
+    });
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+
+  
