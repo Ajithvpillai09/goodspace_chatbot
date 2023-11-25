@@ -20,7 +20,7 @@ const server = createServer(app)
 
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
-app.use(express.static(path.join(__dirname, './frontend')));
+app.use(express.static(path.join(__dirname, './frontend','javaScript')));
 
 
 app.use('/api',router)
@@ -36,7 +36,7 @@ const io = new Server(server,{
 
 
 app.get('/', (req, res) =>
-    res.sendFile(path.resolve(__dirname, './frontend', 'index.html'))
+    res.sendFile(path.resolve(__dirname, './frontend/javaScript', 'index.html'))
 );
 
 app.use(notFound);
