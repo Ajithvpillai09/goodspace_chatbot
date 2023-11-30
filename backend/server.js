@@ -34,10 +34,16 @@ const io = new Server(server,{
     }
   });
 
-
-app.get('/', (req, res) =>
+if(process.env.NODE_ENV === "development"){
+   app.get('/',(req,res)=>{
+    res.send("server running....port 8000")
+   })
+}else{
+    app.get('/', (req, res) =>
     res.sendFile(path.resolve(__dirname, './frontend/javaScript', 'index.html'))
 );
+}
+
 
 app.use(notFound);
 app.use(errorHandler);
